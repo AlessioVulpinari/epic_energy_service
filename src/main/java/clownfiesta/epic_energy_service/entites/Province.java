@@ -14,7 +14,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class District {
+public class Province {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,7 +23,7 @@ public class District {
     private String name_district;
     private String region_district;
 
-    public District(String initial_district, String name_district, String region_district) {
+    public Province(String initial_district, String name_district, String region_district) {
         this.initial_district = initial_district;
         this.name_district = name_district;
         this.region_district = region_district;
