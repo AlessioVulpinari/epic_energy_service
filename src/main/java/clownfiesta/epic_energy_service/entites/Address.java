@@ -25,11 +25,16 @@ public class Address {
     @JoinColumn(name = "cityresidence_id")
     private CityResidence cityResidence;
 
-    public Address(String street, int house_number, String locality, long cap, CityResidence cityResidence) {
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+    public Address(String street, int house_number, String locality, long cap, CityResidence cityResidence, Customer customer) {
         this.street = street;
         this.house_number = house_number;
         this.locality = locality;
         this.cap = cap;
         this.cityResidence = cityResidence;
+        this.customer = customer;
     }
 }
