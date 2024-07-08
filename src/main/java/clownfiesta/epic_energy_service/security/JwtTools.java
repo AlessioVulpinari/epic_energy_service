@@ -1,5 +1,6 @@
 package clownfiesta.epic_energy_service.security;
 
+import clownfiesta.epic_energy_service.entites.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,11 +14,11 @@ public class JwtTools {
     @Value("${jwt.secret}")
     private String secret;
 
-    public String createToken(Utente utente) {
+    public String createToken(User user) {
         return Jwts.builder()
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7))
-                .subject(String.valueOf(utente.getId()))
+                .subject(String.valueOf(user.getId()))
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
                 .compact();
     }

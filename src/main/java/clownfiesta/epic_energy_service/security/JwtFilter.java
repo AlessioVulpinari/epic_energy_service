@@ -1,8 +1,7 @@
 package clownfiesta.epic_energy_service.security;
 
 
-import giulio_marra.s7_l5_be_esame.entities.Utente;
-import giulio_marra.s7_l5_be_esame.services.UtenteServices;
+import clownfiesta.epic_energy_service.entites.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.UnavailableException;
@@ -38,9 +37,9 @@ public class JwtFilter extends OncePerRequestFilter {
         jwtTools.verifyToken(accessToken);
 
         String id = jwtTools.extractIdFromToken(accessToken);
-        Utente utente = utenteServices.getUtente(Long.parseLong(id));
+        User user = utenteServices.getUtente(Long.parseLong(id));
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(utente, null, utente.getAuthorities());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
