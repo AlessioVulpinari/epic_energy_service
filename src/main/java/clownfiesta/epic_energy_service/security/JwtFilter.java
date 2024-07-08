@@ -2,7 +2,7 @@ package clownfiesta.epic_energy_service.security;
 
 
 import clownfiesta.epic_energy_service.entites.User;
-import clownfiesta.epic_energy_service.services.UtenteServices;
+import clownfiesta.epic_energy_service.services.UserServices;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.UnavailableException;
@@ -24,7 +24,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private JwtTools jwtTools;
 
     @Autowired
-    private UtenteServices utenteServices;
+    private UserServices utenteServices;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -38,7 +38,7 @@ public class JwtFilter extends OncePerRequestFilter {
         jwtTools.verifyToken(accessToken);
 
         String id = jwtTools.extractIdFromToken(accessToken);
-        User user = utenteServices.getUtente(Long.parseLong(id));
+        User user = utenteServices.getUser(Long.parseLong(id));
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 
