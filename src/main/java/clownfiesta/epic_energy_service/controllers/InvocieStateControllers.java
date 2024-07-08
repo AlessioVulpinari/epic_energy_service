@@ -39,14 +39,14 @@ public class InvocieStateControllers {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN, USER')")
     @ResponseStatus(HttpStatus.OK)
     public InvoiceState getStateById(@PathVariable Long id) {
         return invoiceStateServices.getStateById(id);
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN, USER')")
     @ResponseStatus(HttpStatus.OK)
     public List<InvoiceState> getAllStates() {
         return invoiceStateServices.getAllStates();
