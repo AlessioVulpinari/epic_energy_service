@@ -19,7 +19,7 @@ import java.util.UUID;
 public class UserServices {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
