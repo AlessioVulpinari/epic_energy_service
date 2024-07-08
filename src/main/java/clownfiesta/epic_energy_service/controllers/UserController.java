@@ -1,9 +1,16 @@
 package clownfiesta.epic_energy_service.controllers;
 
+import clownfiesta.epic_energy_service.entites.User;
+import clownfiesta.epic_energy_service.payloads.UserRequiredDTO;
 import clownfiesta.epic_energy_service.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/user")
@@ -12,5 +19,40 @@ public class UserController {
     @Autowired
     private UserServices userServices;
 
+    @GetMapping("/me")
+    public User getMyProfile(@AuthenticationPrincipal User currentUser) {
+        return currentUser;
+    }
 
+    @PutMapping("/me")
+    public User updateMyProfile(@AuthenticationPrincipal User currentUser, @RequestBody UserRequiredDTO body) {
+        return this.userServices.findByIdAndUpdate(currentUser.getId(), body);
+    }
+
+    @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Page<User> getAllUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size)
+    {
+        return this.userServices.getUsers(page, size);
+    }
+
+    @GetMapping("/{userId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public User findById(@PathVariable long userId)
+    {
+        return this.userServices.findById(userId);
+    }
+
+    @PutMapping("/{userId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public User findByIdAndUpdate(@PathVariable long userId, @RequestBody UserRequiredDTO body) {
+        return this.userServices.findByIdAndUpdate(userId, body);
+    }
+
+    @DeleteMapping("/{userId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void findByIdAndDelete(@PathVariable long userId) {
+        this.userServices.findByIdAndDelete(userId);
+    }
 }
