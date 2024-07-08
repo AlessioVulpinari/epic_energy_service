@@ -1,6 +1,7 @@
 package clownfiesta.epic_energy_service.security;
 
 import clownfiesta.epic_energy_service.entites.User;
+import clownfiesta.epic_energy_service.excepitions.UnauthorizedException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;

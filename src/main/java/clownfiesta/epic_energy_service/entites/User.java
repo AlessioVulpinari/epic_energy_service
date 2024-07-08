@@ -22,21 +22,21 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String nikname;
+    private String username;
     private String email;
     private String password;
-    private String nome_utente;
-    private String cognome_utente;
+    private String name;
+    private String surname;
     private String avatar;
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public User(String nikname, String email, String password, String nome_utente, String cognome_utente, String avatar, Role role) {
-        this.nikname = nikname;
+    public User(String username, String email, String password, String name, String surname, String avatar, Role role) {
+        this.username = username;
         this.email = email;
         this.password = password;
-        this.nome_utente = nome_utente;
-        this.cognome_utente = cognome_utente;
+        this.name = name;
+        this.surname = surname;
         this.avatar = avatar;
         this.role = role;
     }
