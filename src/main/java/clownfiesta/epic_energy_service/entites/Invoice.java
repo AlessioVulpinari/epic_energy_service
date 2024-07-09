@@ -18,9 +18,9 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate invoice_date;
-    private double import_invoice;
-    private long number_invoice;
+    private LocalDate invoiceDate;
+    private double importInvoice;
+    private long numberInvoice;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -31,9 +31,9 @@ public class Invoice {
     private InvoiceState invoiceState;
 
     public Invoice(LocalDate invoice_date, double import_invoice, long number_invoice, Customer customer, InvoiceState invoiceState) {
-        this.invoice_date = invoice_date;
-        this.import_invoice = import_invoice;
-        this.number_invoice = number_invoice;
+        this.invoiceDate = invoice_date;
+        this.importInvoice = import_invoice;
+        this.numberInvoice = number_invoice;
         this.customer = customer;
         this.invoiceState = invoiceState;
     }

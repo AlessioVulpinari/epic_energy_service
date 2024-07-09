@@ -1,0 +1,78 @@
+package clownfiesta.epic_energy_service.services;
+
+import clownfiesta.epic_energy_service.entites.Customer;
+import clownfiesta.epic_energy_service.enums.ClientType;
+import clownfiesta.epic_energy_service.excepitions.BadRequestException;
+import clownfiesta.epic_energy_service.excepitions.NotFoundException;
+import clownfiesta.epic_energy_service.payloads.CustomerDTO;
+import clownfiesta.epic_energy_service.repositories.CustomerRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+public class CustomerService {
+
+    @Autowired
+    private CustomerRepo customerRepository;
+
+    public Page<Customer> getCustomers(int page, int pageSize) {
+        if (pageSize <= 0) pageSize =10;
+        if (pageSize >= 50) pageSize = 50;
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return customerRepository.findAll(pageable);
+    }
+
+    public Customer getUser(long id) {
+        Optional<Customer> customer = customerRepository.findById(id);
+
+        if (customer.isPresent()) return customer.get();
+        else throw new NotFoundException("Cliente con questo id: " + id + " non trovato!");
+    }
+
+    public Customer findById(long userId) {
+        return this.customerRepository.findById(userId).orElseThrow(() -> new NotFoundException(userId));
+    }
+
+    public Customer findByIdAndUpdate(long customerId, CustomerDTO body) {
+        Customer found = findById(customerId);
+
+        found.setBusinessName(body.businessName());
+        found.setVatNumber(body.vatNumber());
+        found.setEmail(body.email());
+        found.setDateLastContact(body.dateLastContact());
+        found.setAnnualTurnover(body.annualTurnover());
+        found.setPecCustomer(body.customerPec());
+        found.setTelCustomer(body.telCustomer());
+        found.setEmailContact(body.emailContact());
+        found.setSurnameContact(body.surnameContact());
+        found.setNameContact(body.nameContact());
+        found.setTelContact(body.telContact());
+        found.setLogoAgency(body.logoAgency());
+        found.setClientType(ClientType.valueOf(body.clientType()));
+
+        return customerRepository.save(found);
+    }
+
+    public void findByIdAndDelete(long userId) {
+        Customer found = findById(userId);
+        this.customerRepository.delete(found);
+    }
+
+    public Customer saveCustomer(CustomerDTO body) {
+        if (this.customerRepository.existsByVatNumber(body.vatNumber())) throw new BadRequestException("Esiste già un cliente con questa partita IVA!");
+        if (this.customerRepository.existsByBusinessNameAndClientType(body.businessName(), ClientType.valueOf(body.clientType()))) {
+            throw new BadRequestException("Esiste già un cliente con questa denominazione!");
+        }
+
+        Customer customer = new Customer(body.businessName(), body.vatNumber(), body.email(), body.dateLastContact(),
+                body.annualTurnover(), body.customerPec(), body.telCustomer(), body.emailContact(), body.nameContact(),
+                body.surnameContact(), body.telContact(), body.logoAgency(), ClientType.valueOf(body.clientType()));
+
+        return customerRepository.save(customer);
+    }
+}
