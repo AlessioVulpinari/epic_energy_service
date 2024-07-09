@@ -18,13 +18,13 @@ public class City {
 
     @ManyToOne
     @JoinColumn(name = "district_id")
-    private Province district;
+    private Province province;
 
     private String denomination_city;
     private String progressive_city;
 
-    public City(Province district, String denomination_city, String progressive_city) {
-        this.district = district;
+    public City(Province province, String denomination_city, String progressive_city) {
+        this.province = province;
         this.denomination_city = denomination_city;
         this.progressive_city = progressive_city;
     }

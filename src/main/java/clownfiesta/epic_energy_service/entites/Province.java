@@ -19,13 +19,13 @@ public class Province {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String initial_district;
-    private String name_district;
-    private String region_district;
+    private String initial_province;
+    private String name_province;
+    private String region_province;
 
-    public Province(String initial_district, String name_district, String region_district) {
-        this.initial_district = initial_district;
-        this.name_district = name_district;
-        this.region_district = region_district;
+    public Province(String initial_province, String name_province, String region_province) {
+        this.initial_province = initial_province;
+        this.name_province = name_province;
+        this.region_province = region_province;
     }
 }
