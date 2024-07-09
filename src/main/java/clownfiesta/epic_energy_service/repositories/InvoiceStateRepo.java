@@ -11,4 +11,6 @@ public interface InvoiceStateRepo extends JpaRepository<InvoiceState, Long> {
     boolean existsByStatusName(String status_name);
 
     Optional<InvoiceState> findByStatusName(String status_name);
+
+
 }

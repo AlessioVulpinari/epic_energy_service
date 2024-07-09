@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/state")
+@RequestMapping("api/states/")
 public class InvoiceStateControllers {
     @Autowired
     InvoiceStateServices invoiceStateServices;
@@ -23,8 +23,7 @@ public class InvoiceStateControllers {
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    NewInvoiceStateResponseDTO createState(@RequestBody @Validated InvoiceStateRequestDTO body, BindingResult bindingResult)
-    {
+    NewInvoiceStateResponseDTO createState(@RequestBody @Validated InvoiceStateRequestDTO body, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new BadRequestException(bindingResult.getAllErrors());
         }
