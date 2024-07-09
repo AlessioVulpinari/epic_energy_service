@@ -57,7 +57,7 @@ public class InvoiceServices {
         return invoiceRepo.findByNumberInvoice(number_invoice).orElseThrow(() -> new NotFoundException("fattura non trovata"));
     }
 
-    public Invoice updateState(Long id, InvoiceRequestDto body) {
+    public Invoice updateInvoice(Long id, InvoiceRequestDto body) {
         Invoice invoice = getInvoiceById(id);
 
         InvoiceState invoiceState = invoiceStateServices.findByStatus(body.name_status());
@@ -79,5 +79,10 @@ public class InvoiceServices {
 
     public List<Invoice> getAllInvoice() {
         return invoiceRepo.findAll();
+    }
+
+    public List<Invoice> getAllInvoicesByCustomerId(Long customerId) {
+        Customer customer = customerService.findById(customerId);
+        return invoiceRepo.findByCustomer(customer);
     }
 }
