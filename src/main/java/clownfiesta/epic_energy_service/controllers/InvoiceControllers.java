@@ -27,7 +27,7 @@ public class InvoiceControllers {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN, USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteState(@PathVariable Long id) {
+    public void deleteInvoice(@PathVariable Long id) {
         invoiceServices.deleteInvocie(id);
     }
 
