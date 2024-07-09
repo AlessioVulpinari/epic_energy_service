@@ -15,10 +15,10 @@ public class CSVreader {
     public List<String[]> readCsv(Path path) throws Exception {
         try (Reader reader = Files.newBufferedReader(path);
              CSVReader csvReader = new CSVReaderBuilder(reader)
-                     .withSkipLines(1)
                      .withCSVParser(new CSVParserBuilder()
-                             .withSeparator(';').withIgnoreLeadingWhiteSpace(true).withIgnoreQuotations(true)
+                             .withSeparator(';')
                              .build())
+                     .withSkipLines(1)
                      .build()) {
             return csvReader.readAll();
         }

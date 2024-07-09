@@ -11,5 +11,5 @@ public interface ProvinceRepository extends JpaRepository<Province, Long> {
 
     boolean existsByNameDistrict(String nameDistrict);
 
-    Optional<Province> findByNameDistrict(String nameDistrict);
+    Optional<Province> findByNameDistrictLike(String nameDistrict);
 }

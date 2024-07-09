@@ -51,10 +51,10 @@ public class databaseLoader {
 
         List<Province> newProvinces = csvProvincia.stream()
                 .map(row -> {
-                    Province province = new Province();
-                    province.setInitialDistrict(row[0]);
-                    province.setNameDistrict(row[1]);
-                    province.setRegionDistrict(row[2]);
+                    Province province = new Province(row[0],row[1],row[2]);
+//                    province.setInitialDistrict(row[0]);
+//                    province.setNameDistrict(row[1]);
+//                    province.setRegionDistrict(row[2]);
                     return province;
                 })
                 .collect(Collectors.toList());
@@ -66,9 +66,9 @@ public class databaseLoader {
 
         List<City> newCity = csvCity.stream()
                 .map(row -> {
-                    City city = new City();
-                    city.setProgressiveCity(String.valueOf(row[0]) + String.valueOf(row[1]));
-                    city.setDenominationCity(row[2]);
+                    City city = new City(this.provinceServices.findByName(row[3]),row[2],row[1]);
+//                    city.setProgressiveCity(String.valueOf(row[0]) + String.valueOf(row[1]));
+//                    city.setDenominationCity(row[2]);
 //                    city.setDistrict(this.provinceServices.findByName(row[3])); //commentando questo e run si riempiono entrambe le tabelle ma nelle city la colonna district_id rimane vuota
 //                    System.out.println((row[3]));
                     return city;
