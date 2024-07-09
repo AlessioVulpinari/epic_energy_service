@@ -17,11 +17,11 @@ public class InvoiceStateServices {
     InvoiceStateRepo invoiceStateRepo;
 
     public InvoiceState saveState(InvoiceStateRequestDto body) {
-        if (invoiceStateRepo.existsByStatus_name(body.status_name())) {
+        if (invoiceStateRepo.existsByStatusName(body.status_name())) {
             throw new BadRequestException("Stato gia esistente");
         }
         InvoiceState invoiceState = new InvoiceState();
-        invoiceState.setStatus_name(body.status_name());
+        invoiceState.setStatusName(body.status_name());
 
         return invoiceStateRepo.save(invoiceState);
     }
@@ -37,13 +37,13 @@ public class InvoiceStateServices {
     }
 
     public InvoiceState findByStatus(String status) {
-        return invoiceStateRepo.findByStatus_name(status).orElseThrow(() -> new NotFoundException("stato non trovato"));
+        return invoiceStateRepo.findByStatusName(status).orElseThrow(() -> new NotFoundException("stato non trovato"));
     }
 
     public InvoiceState updateState(Long id, InvoiceStateRequestDto body) {
         InvoiceState invoiceState = getStateById(id);
 
-        invoiceState.setStatus_name(body.status_name());
+        invoiceState.setStatusName(body.status_name());
 
         return invoiceStateRepo.save(invoiceState);
     }

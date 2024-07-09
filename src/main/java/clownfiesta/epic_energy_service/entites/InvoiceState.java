@@ -19,9 +19,9 @@ public class InvoiceState {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String status_name;
+    private String statusName;
 
     public InvoiceState(String status_name) {
-        this.status_name = status_name;
+        this.statusName = status_name;
     }
 }

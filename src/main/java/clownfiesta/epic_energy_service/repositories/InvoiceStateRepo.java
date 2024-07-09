@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface InvoiceStateRepo extends JpaRepository<InvoiceState, Long> {
-    boolean existsByStatus_name(String status_name);
+    boolean existsByStatusName(String status_name);
 
-    Optional<InvoiceState> findByStatus_name(String status_name);
+    Optional<InvoiceState> findByStatusName(String status_name);
 }

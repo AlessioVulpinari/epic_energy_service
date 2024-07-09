@@ -21,19 +21,22 @@ public class InvoiceServices {
     @Autowired
     InvoiceStateServices invoiceStateServices;
 
+    @Autowired
+    CustomerService customerService;
+
     public Invoice saveInvoice(InvoiceRequestDto body) {
-        if (invoiceRepo.existsByNumber_invoice(body.number_invoice())) {
+        if (invoiceRepo.existsByNumberInvoice(body.number_invoice())) {
             throw new BadRequestException("Fattura con questo numero già esistente");
         }
 
         InvoiceState invoiceState = invoiceStateServices.findByStatus(body.name_status());
-        Customer customer = customerService.findCustomerById(body.customer_id());
+        Customer customer = customerService.findById(body.customer_id());
 
         Invoice invoice = new Invoice();
-        invoice.setImport_invoice(body.import_invoice());
-        invoice.setInvoice_date(body.invoice_date());
+        invoice.setImportInvoice(body.import_invoice());
+        invoice.setInvoiceDate(body.invoice_date());
         invoice.setInvoiceState(invoiceState);
-        invoice.setNumber_invoice(body.number_invoice());
+        invoice.setNumberInvoice(body.number_invoice());
         invoice.setCustomer(customer);
 
         return invoiceRepo.save(invoice);
@@ -51,18 +54,19 @@ public class InvoiceServices {
     }
 
     public Invoice findBynumberinvoice(long number_invoice) {
-        return invoiceRepo.existsByNumber_invoice(number_invoice).orElseThrow(() -> new NotFoundException("fattura non trovata"));
+        return invoiceRepo.findByNumberInvoice(number_invoice).orElseThrow(() -> new NotFoundException("fattura non trovata"));
     }
 
     public Invoice updateState(Long id, InvoiceRequestDto body) {
         Invoice invoice = getInvoiceById(id);
 
         InvoiceState invoiceState = invoiceStateServices.findByStatus(body.name_status());
+        Customer customer = customerService.findById(body.customer_id());
 
-        invoice.setImport_invoice(body.import_invoice());
-        invoice.setInvoice_date(body.invoice_date());
+        invoice.setImportInvoice(body.import_invoice());
+        invoice.setInvoiceDate(body.invoice_date());
         invoice.setInvoiceState(invoiceState);
-        invoice.setNumber_invoice(body.number_invoice());
+        invoice.setNumberInvoice(body.number_invoice());
         invoice.setCustomer(customer);
 
         return invoiceRepo.save(invoice);

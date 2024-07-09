@@ -17,7 +17,7 @@ public class Address {
     private Long id;
 
     private String street;
-    private int house_number;
+    private int houseNumber;
     private String locality;
     private long cap;
 
@@ -31,7 +31,7 @@ public class Address {
 
     public Address(String street, int house_number, String locality, long cap, City cityResidence, Customer customer) {
         this.street = street;
-        this.house_number = house_number;
+        this.houseNumber = house_number;
         this.locality = locality;
         this.cap = cap;
         this.cityResidence = cityResidence;

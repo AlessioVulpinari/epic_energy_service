@@ -20,12 +20,12 @@ public class City {
     @JoinColumn(name = "district_id")
     private Province district;
 
-    private String denomination_city;
-    private String progressive_city;
+    private String denominationCity;
+    private String progressiveCity;
 
     public City(Province district, String denomination_city, String progressive_city) {
         this.district = district;
-        this.denomination_city = denomination_city;
-        this.progressive_city = progressive_city;
+        this.denominationCity = denomination_city;
+        this.progressiveCity = progressive_city;
     }
 }
