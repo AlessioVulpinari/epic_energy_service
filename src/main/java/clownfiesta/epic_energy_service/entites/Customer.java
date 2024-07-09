@@ -10,6 +10,7 @@ import lombok.ToString;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "clienti")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,23 +18,50 @@ import java.time.LocalDate;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_cliente", nullable = false)
     private Long id;
 
+    @Column(name = "nome_azienda", nullable = false)
     private String businessName;
+
+    @Column(name = "partita_iva", nullable = false)
     private String vatNumber;
+
+    @Column(nullable = false)
     private String email;
+
+    @Column(name = "data_inserimento", nullable = false)
     private LocalDate insertionDate;
+
+    @Column(name = "data_ultimo_contatto", nullable = false)
     private LocalDate dateLastContact;
+
+    @Column(name = "fatturato_annuale", nullable = false)
     private long annualTurnover;
+
+    @Column(name = "pec_aziendale", nullable = false)
     private String pecCustomer;
+
+    @Column(name = "numero_aziendale", nullable = false)
     private long telCustomer;
+
+    @Column(name = "email_contatto", nullable = false)
     private String emailContact;
+
+    @Column(name = "nome_contatto", nullable = false)
     private String nameContact;
+
+    @Column(name = "cognome_contatto", nullable = false)
     private String surnameContact;
+
+    @Column(name = "telefono_contatto", nullable = false)
     private long telContact;
+
+    @Column(name = "logo_azienda", nullable = false)
     private String logoAgency;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_azienda", nullable = false)
     private ClientType clientType;
 
     public Customer(String businessName, String vatNumber, String email,

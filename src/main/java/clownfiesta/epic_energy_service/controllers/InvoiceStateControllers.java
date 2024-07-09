@@ -1,27 +1,34 @@
 package clownfiesta.epic_energy_service.controllers;
 
 import clownfiesta.epic_energy_service.entites.InvoiceState;
-import clownfiesta.epic_energy_service.payloads.InvoiceStateRequestDto;
-import clownfiesta.epic_energy_service.payloads.NewInvocieStateResponseDto;
+import clownfiesta.epic_energy_service.excepitions.BadRequestException;
+import clownfiesta.epic_energy_service.payloads.InvoiceStateRequestDTO;
+import clownfiesta.epic_energy_service.payloads.NewInvoiceStateResponseDTO;
 import clownfiesta.epic_energy_service.services.InvoiceStateServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/state")
-public class InvocieStateControllers {
+@RequestMapping("api/state")
+public class InvoiceStateControllers {
     @Autowired
     InvoiceStateServices invoiceStateServices;
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    NewInvocieStateResponseDto createState(@RequestBody InvoiceStateRequestDto body) {
-        return new NewInvocieStateResponseDto(invoiceStateServices.saveState(body).getId());
+    NewInvoiceStateResponseDTO createState(@RequestBody @Validated InvoiceStateRequestDTO body, BindingResult bindingResult)
+    {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException(bindingResult.getAllErrors());
+        }
+        return new NewInvoiceStateResponseDTO(invoiceStateServices.saveState(body).getId());
     }
 
     @DeleteMapping("/{id}")
@@ -34,7 +41,10 @@ public class InvocieStateControllers {
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    InvoiceState updateState(@PathVariable Long id, @RequestBody InvoiceStateRequestDto body) {
+    InvoiceState updateState(@PathVariable Long id, @RequestBody @Validated InvoiceStateRequestDTO body, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException(bindingResult.getAllErrors());
+        }
         return invoiceStateServices.updateState(id, body);
     }
 

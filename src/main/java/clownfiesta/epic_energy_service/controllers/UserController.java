@@ -1,6 +1,7 @@
 package clownfiesta.epic_energy_service.controllers;
 
 import clownfiesta.epic_energy_service.entites.User;
+import clownfiesta.epic_energy_service.excepitions.BadRequestException;
 import clownfiesta.epic_energy_service.payloads.UserRequiredDTO;
 import clownfiesta.epic_energy_service.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,7 +26,10 @@ public class UserController {
     }
 
     @PutMapping("/me")
-    public User updateMyProfile(@AuthenticationPrincipal User currentUser, @RequestBody UserRequiredDTO body) {
+    public User updateMyProfile(@AuthenticationPrincipal User currentUser, @RequestBody @Validated UserRequiredDTO body, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException(bindingResult.getAllErrors());
+        }
         return this.userServices.findByIdAndUpdate(currentUser.getId(), body);
     }
 
@@ -41,7 +47,10 @@ public class UserController {
 
     @PutMapping("/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public User findByIdAndUpdate(@PathVariable long userId, @RequestBody UserRequiredDTO body) {
+    public User findByIdAndUpdate(@PathVariable long userId, @RequestBody @Validated UserRequiredDTO body, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException(bindingResult.getAllErrors());
+        }
         return this.userServices.findByIdAndUpdate(userId, body);
     }
 

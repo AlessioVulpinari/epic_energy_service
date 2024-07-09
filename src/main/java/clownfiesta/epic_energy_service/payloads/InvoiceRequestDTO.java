@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
-public record InvoiceRequestDto(
+public record InvoiceRequestDTO(
         @NotNull(message = "Inserire data fattura")
         LocalDate invoice_date,
         @NotNull(message = "Inserire importo fattura")

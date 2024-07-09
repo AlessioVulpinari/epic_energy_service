@@ -1,18 +1,21 @@
 package clownfiesta.epic_energy_service.controllers;
 
 import clownfiesta.epic_energy_service.entites.Invoice;
-import clownfiesta.epic_energy_service.payloads.InvoiceRequestDto;
-import clownfiesta.epic_energy_service.payloads.NewInvoiceResponseDto;
+import clownfiesta.epic_energy_service.excepitions.BadRequestException;
+import clownfiesta.epic_energy_service.payloads.InvoiceRequestDTO;
+import clownfiesta.epic_energy_service.payloads.NewInvoiceResponseDTO;
 import clownfiesta.epic_energy_service.services.InvoiceServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/invoices")
+@RequestMapping("api/invoices")
 public class InvoiceControllers {
     @Autowired
     private InvoiceServices invoiceServices;
@@ -20,8 +23,11 @@ public class InvoiceControllers {
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN, USER')")
     @ResponseStatus(HttpStatus.CREATED)
-    NewInvoiceResponseDto createInvoice(@RequestBody InvoiceRequestDto body) {
-        return new NewInvoiceResponseDto(invoiceServices.saveInvoice(body).getId());
+    NewInvoiceResponseDTO createInvoice(@RequestBody @Validated InvoiceRequestDTO body, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException(bindingResult.getAllErrors());
+        }
+        return new NewInvoiceResponseDTO(invoiceServices.saveInvoice(body).getId());
     }
 
     @DeleteMapping("/{id}")
@@ -34,7 +40,10 @@ public class InvoiceControllers {
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    Invoice updateInvoice(@PathVariable Long id, @RequestBody InvoiceRequestDto body) {
+    Invoice updateInvoice(@PathVariable Long id, @Validated @RequestBody InvoiceRequestDTO body, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException(bindingResult.getAllErrors());
+        }
         return invoiceServices.updateInvoice(id, body);
     }
 
@@ -48,8 +57,8 @@ public class InvoiceControllers {
     @GetMapping("/{numberinvoice}")
     @PreAuthorize("hasAuthority('ADMIN, USER')")
     @ResponseStatus(HttpStatus.OK)
-    public Invoice getInvoiceByNumber(@PathVariable Long numberinvoice) {
-        return invoiceServices.findBynumberinvoice(numberinvoice);
+    public Invoice getInvoiceByNumber(@PathVariable Long numberInvoice) {
+        return invoiceServices.findBynumberinvoice(numberInvoice);
     }
 
     @GetMapping("/customer/{customerId}")
