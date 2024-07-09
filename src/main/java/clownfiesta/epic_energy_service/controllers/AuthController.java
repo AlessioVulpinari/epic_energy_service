@@ -1,9 +1,9 @@
 package clownfiesta.epic_energy_service.controllers;
 
 import clownfiesta.epic_energy_service.excepitions.BadRequestException;
+import clownfiesta.epic_energy_service.payloads.UserLoginDto;
 import clownfiesta.epic_energy_service.payloads.UserLoginResponseDTO;
 import clownfiesta.epic_energy_service.payloads.UserRegistrationResponseDTO;
-import clownfiesta.epic_energy_service.payloads.UserLoginDto;
 import clownfiesta.epic_energy_service.payloads.UserRequiredDTO;
 import clownfiesta.epic_energy_service.services.AuthServices;
 import clownfiesta.epic_energy_service.services.UserServices;
@@ -14,7 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired

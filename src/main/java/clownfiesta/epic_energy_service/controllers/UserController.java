@@ -10,10 +10,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
-
 @RestController
-@RequestMapping("api/user")
+@RequestMapping("/api/user")
 public class UserController {
 
     @Autowired
@@ -31,15 +29,13 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Page<User> getAllUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size)
-    {
+    public Page<User> getAllUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
         return this.userServices.getUsers(page, size);
     }
 
     @GetMapping("/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public User findById(@PathVariable long userId)
-    {
+    public User findById(@PathVariable long userId) {
         return this.userServices.findById(userId);
     }
 
