@@ -3,7 +3,7 @@ package clownfiesta.epic_energy_service.controllers;
 import clownfiesta.epic_energy_service.excepitions.BadRequestException;
 import clownfiesta.epic_energy_service.payloads.UserLoginResponseDTO;
 import clownfiesta.epic_energy_service.payloads.UserRegistrationResponseDTO;
-import clownfiesta.epic_energy_service.payloads.UserLoginDto;
+import clownfiesta.epic_energy_service.payloads.UserLoginDTO;
 import clownfiesta.epic_energy_service.payloads.UserRequiredDTO;
 import clownfiesta.epic_energy_service.services.AuthServices;
 import clownfiesta.epic_energy_service.services.UserServices;
@@ -24,7 +24,10 @@ public class AuthController {
     private UserServices userServices;
 
     @PostMapping("/user/login")
-    public UserLoginResponseDTO login(@RequestBody UserLoginDto body) {
+    public UserLoginResponseDTO login(@RequestBody @Validated UserLoginDTO body, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException(bindingResult.getAllErrors());
+        }
         return new UserLoginResponseDTO(authServices.generateToken(body));
     }
 

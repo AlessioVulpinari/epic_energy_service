@@ -5,7 +5,7 @@ import clownfiesta.epic_energy_service.entites.Invoice;
 import clownfiesta.epic_energy_service.entites.InvoiceState;
 import clownfiesta.epic_energy_service.excepitions.BadRequestException;
 import clownfiesta.epic_energy_service.excepitions.NotFoundException;
-import clownfiesta.epic_energy_service.payloads.InvoiceRequestDto;
+import clownfiesta.epic_energy_service.payloads.InvoiceRequestDTO;
 import clownfiesta.epic_energy_service.repositories.InvoiceRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class InvoiceServices {
     @Autowired
     CustomerService customerService;
 
-    public Invoice saveInvoice(InvoiceRequestDto body) {
+    public Invoice saveInvoice(InvoiceRequestDTO body) {
         if (invoiceRepo.existsByNumberInvoice(body.number_invoice())) {
             throw new BadRequestException("Fattura con questo numero già esistente");
         }
@@ -57,7 +57,7 @@ public class InvoiceServices {
         return invoiceRepo.findByNumberInvoice(number_invoice).orElseThrow(() -> new NotFoundException("fattura non trovata"));
     }
 
-    public Invoice updateInvoice(Long id, InvoiceRequestDto body) {
+    public Invoice updateInvoice(Long id, InvoiceRequestDTO body) {
         Invoice invoice = getInvoiceById(id);
 
         InvoiceState invoiceState = invoiceStateServices.findByStatus(body.name_status());

@@ -9,6 +9,7 @@ import lombok.ToString;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "fatture")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,10 +17,16 @@ import java.time.LocalDate;
 public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_fattura", nullable = false)
     private Long id;
 
+    @Column(name = "data_fattura", nullable = false)
     private LocalDate invoiceDate;
+
+    @Column(name = "importo_fattura", nullable = false)
     private double importInvoice;
+
+    @Column(name = "numero_fattura", nullable = false)
     private long numberInvoice;
 
     @ManyToOne

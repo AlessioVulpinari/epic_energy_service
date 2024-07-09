@@ -1,15 +1,13 @@
 package clownfiesta.epic_energy_service.entites;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Entity
+@Table(name = "stati_fattura")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,8 +15,10 @@ import lombok.ToString;
 public class InvoiceState {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_stato_fattura")
     private Long id;
 
+    @Column(name = "nome_stato_fattura")
     private String statusName;
 
     public InvoiceState(String status_name) {
