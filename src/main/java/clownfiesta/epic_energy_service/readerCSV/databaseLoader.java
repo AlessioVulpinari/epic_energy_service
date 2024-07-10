@@ -52,9 +52,62 @@ public class databaseLoader {
                     //                    province.setInitialDistrict(row[0]);
 //                    province.setNameDistrict(row[1]);
 //                    province.setRegionDistrict(row[2]);
+
+                    switch (row[1]) {
+
+                        case "Monza-Brianza" :
+                            row[1] = "Monza e della Brianza";
+                            break;
+
+                        case "Vibo-Valentia" :
+                            row[1] = "Vibo Valentia";
+                            break;
+
+                        case "La-Spezia" :
+                            row[1] = "La Spezia";
+                            break;
+
+                        case "Aosta" :
+                            row[1] = "Valle d'Aosta/Vallée d'Aoste";
+                            break;
+
+                        case "Ascoli-Piceno" :
+                            row[1] = "Ascoli Piceno";
+                            break;
+
+                        case "Bolzano" :
+                            row[1] = "Bolzano/Bozen";
+                            break;
+
+                        case "Pesaro-Urbino" :
+                            row[1] = "Pesaro e Urbino";
+                            break;
+
+                        case "Reggio-Calabria" :
+                            row[1] = "Reggio Calabria";
+                            break;
+
+                        case "Forli-Cesena" :
+                            row[1] = "Forlì-Cesena";
+                            break;
+
+                        case "Reggio-Emilia":
+                            row[1] = "Reggio nell'Emilia";
+                            break;
+
+                        default:
+                          break;
+                    }
+
                     return new Province(row[0],row[1],row[2]);
                 })
                 .collect(Collectors.toList());
+
+        Province verbano = new Province("VCO", "Verbano-Cusio-Ossola", "Piemonte");
+        Province sudSardegna = new Province("SU", "Sud Sardegna", "Sardegna");
+
+        newProvinces.add(verbano);
+        newProvinces.add(sudSardegna);
 
         Set<Province> newProvincesSet = new HashSet<>(newProvinces);
         newProvincesSet.removeAll(existingProvinces);
