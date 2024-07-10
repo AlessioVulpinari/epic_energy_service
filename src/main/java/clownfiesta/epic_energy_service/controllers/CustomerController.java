@@ -52,7 +52,7 @@ public class CustomerController {
     @GetMapping("/name")
     @PreAuthorize("hasAuthority('ADMIN')")
     Page<Customer> findByName(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
-        return customerService.filterByName(page, size);
+        return customerService.orderByname(page, size);
     }
 
     @GetMapping("/turnover")
@@ -89,6 +89,12 @@ public class CustomerController {
     @PreAuthorize("hasAuthority('ADMIN')")
     Page<Customer> filterByLastDate(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, @PathVariable LocalDate date) {
         return customerService.filterByLastContactDate(page, size, date);
+    }
+
+    @GetMapping("/filtername/{name}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    Page<Customer> filterByName(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, @PathVariable String name) {
+        return customerService.filterByName(page, size, name);
     }
 
 }

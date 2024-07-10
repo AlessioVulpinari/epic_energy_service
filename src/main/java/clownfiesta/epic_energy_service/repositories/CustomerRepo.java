@@ -44,7 +44,8 @@ public interface CustomerRepo extends JpaRepository<Customer, Long> {
     @Query("SELECT c FROM Customer c WHERE c.dateLastContact = :date")
     Page<Customer> filterByLastContactDate(@Param("date") LocalDate date, Pageable pageable);
 
-
+    @Query("SELECT c FROM Customer c WHERE lower(c.businessName) LIKE lower(concat('%',:name,'%'))")
+    Page<Customer> filterByName(@Param("name") String name, Pageable pageable);
 }
 
 

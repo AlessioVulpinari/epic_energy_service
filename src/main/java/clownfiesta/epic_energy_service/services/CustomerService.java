@@ -78,7 +78,7 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
-    public Page<Customer> filterByName(int page, int size) {
+    public Page<Customer> orderByname(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return customerRepository.orderByBusinessName(pageable);
     }
@@ -116,5 +116,10 @@ public class CustomerService {
     public Page<Customer> filterByLastContactDate(int page, int size, LocalDate date) {
         Pageable pageable = PageRequest.of(page, size);
         return customerRepository.filterByLastContactDate(date, pageable);
+    }
+
+    public Page<Customer> filterByName(int page, int size, String name) {
+        Pageable pageable = PageRequest.of(page, size);
+        return customerRepository.filterByName(name, pageable);
     }
 }
