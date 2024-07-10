@@ -1,5 +1,6 @@
 package clownfiesta.epic_energy_service.entites;
 
+import clownfiesta.epic_energy_service.enums.LocationType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,12 +39,16 @@ public class Address {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    public Address(String street, int houseNumber, String locality, long cap, City cityResidence, Customer customer) {
+    @Enumerated(EnumType.STRING)
+    private LocationType locationTypes;
+
+    public Address(String street, int houseNumber, String locality, long cap, City cityResidence, Customer customer, LocationType locationTypes) {
         this.street = street;
         this.houseNumber = houseNumber;
         this.locality = locality;
         this.cap = cap;
         this.cityResidence = cityResidence;
         this.customer = customer;
+        this.locationTypes = locationTypes;
     }
 }

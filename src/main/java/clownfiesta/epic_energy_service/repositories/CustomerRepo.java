@@ -6,28 +6,35 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public interface CustomerRepo extends JpaRepository<Customer, Long> {
 
     boolean existsByVatNumber(String vat_number);
 
+    boolean existsByBusinessNameAndClientType(String businessName, ClientType clientType);
+
     @Query("SELECT c FROM Customer c ORDER BY businessName")
     Page<Customer> orderByBusinessName(Pageable pageable);
 
     @Query("SELECT c FROM Customer c ORDER BY annualTurnover")
-    List<Customer> orderByAnnualTurnover();
+    Page<Customer> orderByAnnualTurnover(Pageable pageable);
 
     @Query("SELECT c FROM Customer c ORDER BY insertionDate")
-    List<Customer> orderByInsertionDate();
+    Page<Customer> orderByInsertionDate(Pageable pageable);
 
     @Query("SELECT c FROM Customer c ORDER BY dateLastContact")
-    List<Customer> orderByDateLastContact();
+    Page<Customer> orderByDateLastContact(Pageable pageable);
 
-    boolean existsByBusinessNameAndClientType(String businessName, ClientType clientType);
+    //@Query("SELECT c FROM Customer c JOIN Address a ON c.id=a.customer JOIN City ct ON a.cityResidence = ct.id JOIN Province p ON ct.district= p.id ORDER BY p.nameDistrict")
+    //Page<Customer> orderByProvinceName(Pageable pageable);
+
+    //////////////////////////////FILTRI777777777777777777777777777777
+
+    @Query("SELECT c FROM Customer c WHERE c.annualTurnover = :turnover")
+    Page<Customer> filterByTurnover(@Param("turnover") long turnover, Pageable pageable);
 
 
 }

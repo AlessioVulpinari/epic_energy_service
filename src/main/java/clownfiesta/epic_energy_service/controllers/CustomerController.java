@@ -49,8 +49,32 @@ public class CustomerController {
 
     @GetMapping("/name")
     @PreAuthorize("hasAuthority('ADMIN')")
-    Page<Customer> findByName(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "2") int size) {
+    Page<Customer> findByName(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
         return customerService.filterByName(page, size);
+    }
+
+    @GetMapping("/turnover")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    Page<Customer> findByAnnualTurnover(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        return customerService.orderrByAnnualTurnover(page, size);
+    }
+
+    @GetMapping("/date")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    Page<Customer> findByInsertionDate(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        return customerService.filterByInsertionDate(page, size);
+    }
+
+    @GetMapping("/lastcontact")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    Page<Customer> findbYLastContact(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        return customerService.filterByLastContact(page, size);
+    }
+
+    @GetMapping("/filterturonver/{turnover}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    Page<Customer> filterByTurnover(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, @PathVariable long turnover) {
+        return customerService.filterByAnnualTurnover(page, size, turnover);
     }
 
 }

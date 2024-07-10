@@ -12,7 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -83,15 +82,28 @@ public class CustomerService {
         return customerRepository.orderByBusinessName(pageable);
     }
 
-    public List<Customer> filterByAnnualTurnover() {
-        return customerRepository.orderByAnnualTurnover();
+    public Page<Customer> orderrByAnnualTurnover(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return customerRepository.orderByAnnualTurnover(pageable);
     }
 
-    public List<Customer> filterByLastContact() {
-        return customerRepository.orderByDateLastContact();
+    public Page<Customer> filterByLastContact(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return customerRepository.orderByDateLastContact(pageable);
     }
 
-    public List<Customer> filterByInsertionDate() {
-        return customerRepository.orderByInsertionDate();
+    public Page<Customer> filterByInsertionDate(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return customerRepository.orderByInsertionDate(pageable);
+    }
+
+    /*public Page<Customer> filterByLegalOffice(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return customerRepository.orderByProvinceName(pageable);
+    }*/
+
+    public Page<Customer> filterByAnnualTurnover(int page, int size, long turnover) {
+        Pageable pageable = PageRequest.of(page, size);
+        return customerRepository.filterByTurnover(turnover, pageable);
     }
 }
