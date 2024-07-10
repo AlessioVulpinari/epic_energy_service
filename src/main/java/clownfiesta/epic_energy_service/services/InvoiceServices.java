@@ -8,8 +8,12 @@ import clownfiesta.epic_energy_service.excepitions.NotFoundException;
 import clownfiesta.epic_energy_service.payloads.InvoiceRequestDTO;
 import clownfiesta.epic_energy_service.repositories.InvoiceRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -84,5 +88,20 @@ public class InvoiceServices {
     public List<Invoice> getAllInvoicesByCustomerId(Long customerId) {
         Customer customer = customerService.findById(customerId);
         return invoiceRepo.findByCustomer(customer);
+    }
+
+    public Page<Invoice> filterByCustomerName(int page, int size, String name) {
+        Pageable pageable = PageRequest.of(page, size);
+        return invoiceRepo.filterByCustomer(name, pageable);
+    }
+
+    public Page<Invoice> filterByState(int page, int size, String state) {
+        Pageable pageable = PageRequest.of(page, size);
+        return invoiceRepo.filterByStatus(state, pageable);
+    }
+
+    public Page<Invoice> filterByDate(int page, int size, LocalDate date) {
+        Pageable pageable = PageRequest.of(page, size);
+        return invoiceRepo.filterByDate(date, pageable);
     }
 }

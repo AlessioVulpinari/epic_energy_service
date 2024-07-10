@@ -6,12 +6,14 @@ import clownfiesta.epic_energy_service.payloads.InvoiceRequestDTO;
 import clownfiesta.epic_energy_service.payloads.NewInvoiceResponseDTO;
 import clownfiesta.epic_energy_service.services.InvoiceServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -66,5 +68,23 @@ public class InvoiceControllers {
     @ResponseStatus(HttpStatus.OK)
     public List<Invoice> getInvoicesByCustomerId(@PathVariable Long customerId) {
         return invoiceServices.getAllInvoicesByCustomerId(customerId);
+    }
+
+    @GetMapping("/filtercustomer/{customername}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    Page<Invoice> filterByName(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, @PathVariable String customername) {
+        return invoiceServices.filterByCustomerName(page, size, customername);
+    }
+
+    @GetMapping("/filterdate/{date}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    Page<Invoice> filterByDate(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, @PathVariable LocalDate date) {
+        return invoiceServices.filterByDate(page, size, date);
+    }
+
+    @GetMapping("/filterstate/{state}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    Page<Invoice> filterByState(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, @PathVariable String state) {
+        return invoiceServices.filterByState(page, size, state);
     }
 }
