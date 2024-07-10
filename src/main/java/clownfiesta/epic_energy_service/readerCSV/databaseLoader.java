@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -49,10 +50,6 @@ public class databaseLoader {
 
         List<Province> newProvinces = csvProvincia.stream()
                 .map(row -> {
-                    //                    province.setInitialDistrict(row[0]);
-//                    province.setNameDistrict(row[1]);
-//                    province.setRegionDistrict(row[2]);
-
                     switch (row[1]) {
 
                         case "Monza-Brianza" :
@@ -118,15 +115,10 @@ public class databaseLoader {
 
         List<City> newCity = csvCity.stream()
                 .map(row -> {
-                    // city.setProgressiveCity(String.valueOf(row[0]) + String.valueOf(row[1]));
-//                    city.setDenominationCity(row[2]);
-//                    city.setDistrict(this.provinceServices.findByName(row[3])); //commentando questo e run si riempiono entrambe le tabelle ma nelle city la colonna district_id rimane vuota
-//                    System.out.println((row[3]));
-
                    City city = new City();
 
                     try {
-                        city.setProgressiveCity(row[0] + row[1]);
+                        city.setProgressiveCity(row[1]);
                         city.setDenominationCity(row[2]);
                         city.setDistrict(this.provinceServices.findByName(row[3]));
 
@@ -136,8 +128,17 @@ public class databaseLoader {
 
                     return city;
                 })
-                .collect(Collectors.toList());
+                .toList();
 
+        int x = 0;
+
+        for (City city : newCity) {
+            if (Objects.equals(city.getDistrict().getId(), this.provinceServices.findByName("Sassari").getId())) {
+                x = x + 1;
+                System.out.println(x);
+                city.setProgressiveCity(String.valueOf(x));
+            }
+        }
 
         Set<City> newMunicipalitiesSet = new HashSet<>(newCity);
         newMunicipalitiesSet.removeAll(existingMunicipalities);
