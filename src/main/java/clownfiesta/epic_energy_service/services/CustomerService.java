@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,7 +22,7 @@ public class CustomerService {
     private CustomerRepo customerRepository;
 
     public Page<Customer> getCustomers(int page, int pageSize) {
-        if (pageSize <= 0) pageSize =10;
+        if (pageSize <= 0) pageSize = 10;
         if (pageSize >= 50) pageSize = 50;
         Pageable pageable = PageRequest.of(page, pageSize);
         return customerRepository.findAll(pageable);
@@ -64,7 +65,8 @@ public class CustomerService {
     }
 
     public Customer saveCustomer(CustomerDTO body) {
-        if (this.customerRepository.existsByVatNumber(body.vatNumber())) throw new BadRequestException("Esiste già un cliente con questa partita IVA!");
+        if (this.customerRepository.existsByVatNumber(body.vatNumber()))
+            throw new BadRequestException("Esiste già un cliente con questa partita IVA!");
         if (this.customerRepository.existsByBusinessNameAndClientType(body.businessName(), ClientType.valueOf(body.clientType()))) {
             throw new BadRequestException("Esiste già un cliente con questa denominazione!");
         }
@@ -74,5 +76,22 @@ public class CustomerService {
                 body.surnameContact(), body.telContact(), body.logoAgency(), ClientType.valueOf(body.clientType()));
 
         return customerRepository.save(customer);
+    }
+
+    public Page<Customer> filterByName(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return customerRepository.orderByBusinessName(pageable);
+    }
+
+    public List<Customer> filterByAnnualTurnover() {
+        return customerRepository.orderByAnnualTurnover();
+    }
+
+    public List<Customer> filterByLastContact() {
+        return customerRepository.orderByDateLastContact();
+    }
+
+    public List<Customer> filterByInsertionDate() {
+        return customerRepository.orderByInsertionDate();
     }
 }

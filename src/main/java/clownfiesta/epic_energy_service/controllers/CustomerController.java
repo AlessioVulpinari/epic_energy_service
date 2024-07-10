@@ -6,6 +6,7 @@ import clownfiesta.epic_energy_service.payloads.CustomerDTO;
 import clownfiesta.epic_energy_service.payloads.CustomerResponseDto;
 import clownfiesta.epic_energy_service.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
@@ -45,4 +46,11 @@ public class CustomerController {
         }
         return customerService.findByIdAndUpdate(id, body);
     }
+
+    @GetMapping("/name")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    Page<Customer> findByName(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "2") int size) {
+        return customerService.filterByName(page, size);
+    }
+
 }
