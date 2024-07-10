@@ -31,9 +31,9 @@ public interface InvoiceRepo extends JpaRepository<Invoice, Long> {
     @Query("SELECT i FROM Invoice i WHERE i.invoiceDate = :date")
     Page<Invoice> filterByDate(@Param("date") LocalDate date, Pageable pageable);
 
-    //@Query("SELECT i FROM Invoice i WHERE i.customer.businessName = :customername")
-    //Page<Invoice> filterByCustomer(@Param("customername") String customerName, Pageable pageable);
+    @Query("SELECT i FROM Invoice i WHERE YEAR(i.invoiceDate) = :year")
+    Page<Invoice> filterByYear(@Param("year") int year, Pageable pageable);
 
-    //@Query("SELECT i FROM Invoice i WHERE i.customer.businessName = :customername")
-    //Page<Invoice> filterByCustomer(@Param("customername") String customerName, Pageable pageable);
+    @Query("SELECT i FROM Invoice i WHERE i.importInvoice <= :max AND i.importInvoice >= :min")
+    Page<Invoice> filterByImport(@Param("max") double max, @Param("min") double min, Pageable pageable);
 }

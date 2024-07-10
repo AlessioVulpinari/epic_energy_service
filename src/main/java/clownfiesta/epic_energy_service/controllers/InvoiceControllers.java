@@ -87,4 +87,16 @@ public class InvoiceControllers {
     Page<Invoice> filterByState(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, @PathVariable String state) {
         return invoiceServices.filterByState(page, size, state);
     }
+
+    @GetMapping("/filteryear/{year}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    Page<Invoice> filterByState(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, @PathVariable int year) {
+        return invoiceServices.filterByYear(page, size, year);
+    }
+
+    @GetMapping("/filterimport/{max}/{min}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    Page<Invoice> filterByImport(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, @PathVariable double max, @PathVariable double min) {
+        return invoiceServices.filterByImport(page, size, max, min);
+    }
 }

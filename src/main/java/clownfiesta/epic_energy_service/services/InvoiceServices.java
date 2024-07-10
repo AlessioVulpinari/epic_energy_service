@@ -104,4 +104,14 @@ public class InvoiceServices {
         Pageable pageable = PageRequest.of(page, size);
         return invoiceRepo.filterByDate(date, pageable);
     }
+
+    public Page<Invoice> filterByYear(int page, int size, int year) {
+        Pageable pageable = PageRequest.of(page, size);
+        return invoiceRepo.filterByYear(year, pageable);
+    }
+
+    public Page<Invoice> filterByImport(int page, int size, double max, double min) {
+        Pageable pageable = PageRequest.of(page, size);
+        return invoiceRepo.filterByImport(max, min, pageable);
+    }
 }
