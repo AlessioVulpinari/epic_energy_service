@@ -55,39 +55,39 @@ public class databaseLoader {
 
                     switch (row[1]) {
 
-                        case "Monza-Brianza" :
+                        case "Monza-Brianza":
                             row[1] = "Monza e della Brianza";
                             break;
 
-                        case "Vibo-Valentia" :
+                        case "Vibo-Valentia":
                             row[1] = "Vibo Valentia";
                             break;
 
-                        case "La-Spezia" :
+                        case "La-Spezia":
                             row[1] = "La Spezia";
                             break;
 
-                        case "Aosta" :
+                        case "Aosta":
                             row[1] = "Valle d'Aosta/Vallée d'Aoste";
                             break;
 
-                        case "Ascoli-Piceno" :
+                        case "Ascoli-Piceno":
                             row[1] = "Ascoli Piceno";
                             break;
 
-                        case "Bolzano" :
+                        case "Bolzano":
                             row[1] = "Bolzano/Bozen";
                             break;
 
-                        case "Pesaro-Urbino" :
+                        case "Pesaro-Urbino":
                             row[1] = "Pesaro e Urbino";
                             break;
 
-                        case "Reggio-Calabria" :
+                        case "Reggio-Calabria":
                             row[1] = "Reggio Calabria";
                             break;
 
-                        case "Forli-Cesena" :
+                        case "Forli-Cesena":
                             row[1] = "Forlì-Cesena";
                             break;
 
@@ -96,10 +96,10 @@ public class databaseLoader {
                             break;
 
                         default:
-                          break;
+                            break;
                     }
 
-                    return new Province(row[0],row[1],row[2]);
+                    return new Province(row[0], row[1], row[2]);
                 })
                 .collect(Collectors.toList());
 
@@ -112,7 +112,7 @@ public class databaseLoader {
         Set<Province> newProvincesSet = new HashSet<>(newProvinces);
         newProvincesSet.removeAll(existingProvinces);
 
-        newProvincesSet.forEach(provinceRepository::save);
+        //newProvincesSet.forEach(provinceRepository::save);
 
         HashSet<String> errorList = new HashSet<>();
 
@@ -123,14 +123,14 @@ public class databaseLoader {
 //                    city.setDistrict(this.provinceServices.findByName(row[3])); //commentando questo e run si riempiono entrambe le tabelle ma nelle city la colonna district_id rimane vuota
 //                    System.out.println((row[3]));
 
-                   City city = new City();
+                    City city = new City();
 
                     try {
                         city.setProgressiveCity(row[0] + row[1]);
                         city.setDenominationCity(row[2]);
                         city.setDistrict(this.provinceServices.findByName(row[3]));
 
-                    } catch (NotFoundException e){
+                    } catch (NotFoundException e) {
                         errorList.add(row[3]);
                     }
 
@@ -142,7 +142,7 @@ public class databaseLoader {
         Set<City> newMunicipalitiesSet = new HashSet<>(newCity);
         newMunicipalitiesSet.removeAll(existingMunicipalities);
 
-        newMunicipalitiesSet.forEach(cityRepository::save);
+        //newMunicipalitiesSet.forEach(cityRepository::save);
 
         errorList.forEach(System.out::println);
     }

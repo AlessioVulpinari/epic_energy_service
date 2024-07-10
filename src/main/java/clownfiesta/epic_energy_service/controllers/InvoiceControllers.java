@@ -21,7 +21,7 @@ public class InvoiceControllers {
     private InvoiceServices invoiceServices;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN, USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     NewInvoiceResponseDTO createInvoice(@RequestBody @Validated InvoiceRequestDTO body, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

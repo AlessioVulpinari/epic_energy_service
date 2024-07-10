@@ -13,14 +13,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/customers/")
+@RequestMapping("/api/customers")
 public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN, USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     CustomerResponseDto createCustomer(@RequestBody @Validated CustomerDTO body, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
