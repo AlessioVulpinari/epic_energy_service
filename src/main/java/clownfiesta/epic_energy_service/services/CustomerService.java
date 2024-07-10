@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -105,5 +106,15 @@ public class CustomerService {
     public Page<Customer> filterByAnnualTurnover(int page, int size, long turnover) {
         Pageable pageable = PageRequest.of(page, size);
         return customerRepository.filterByTurnover(turnover, pageable);
+    }
+
+    public Page<Customer> filterByInsertionDate(int page, int size, LocalDate date) {
+        Pageable pageable = PageRequest.of(page, size);
+        return customerRepository.filterByInsertionDater(date, pageable);
+    }
+
+    public Page<Customer> filterByLastContactDate(int page, int size, LocalDate date) {
+        Pageable pageable = PageRequest.of(page, size);
+        return customerRepository.filterByLastContactDate(date, pageable);
     }
 }

@@ -13,6 +13,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/api/customers")
 public class CustomerController {
@@ -75,6 +77,18 @@ public class CustomerController {
     @PreAuthorize("hasAuthority('ADMIN')")
     Page<Customer> filterByTurnover(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, @PathVariable long turnover) {
         return customerService.filterByAnnualTurnover(page, size, turnover);
+    }
+
+    @GetMapping("/filterinsertiondate/{date}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    Page<Customer> filterByInsertionDate(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, @PathVariable LocalDate date) {
+        return customerService.filterByInsertionDate(page, size, date);
+    }
+
+    @GetMapping("/filterlastdate/{date}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    Page<Customer> filterByLastDate(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, @PathVariable LocalDate date) {
+        return customerService.filterByLastContactDate(page, size, date);
     }
 
 }

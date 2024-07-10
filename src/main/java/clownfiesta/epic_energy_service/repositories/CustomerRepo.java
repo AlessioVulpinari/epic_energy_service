@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+
 @Repository
 public interface CustomerRepo extends JpaRepository<Customer, Long> {
 
@@ -35,6 +37,12 @@ public interface CustomerRepo extends JpaRepository<Customer, Long> {
 
     @Query("SELECT c FROM Customer c WHERE c.annualTurnover = :turnover")
     Page<Customer> filterByTurnover(@Param("turnover") long turnover, Pageable pageable);
+
+    @Query("SELECT c FROM Customer c WHERE c.insertionDate = :date")
+    Page<Customer> filterByInsertionDater(@Param("date") LocalDate date, Pageable pageable);
+
+    @Query("SELECT c FROM Customer c WHERE c.dateLastContact = :date")
+    Page<Customer> filterByLastContactDate(@Param("date") LocalDate date, Pageable pageable);
 
 
 }
