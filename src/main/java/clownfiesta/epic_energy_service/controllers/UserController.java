@@ -3,6 +3,7 @@ package clownfiesta.epic_energy_service.controllers;
 import clownfiesta.epic_energy_service.entites.User;
 import clownfiesta.epic_energy_service.excepitions.BadRequestException;
 import clownfiesta.epic_energy_service.payloads.UserRequiredDTO;
+import clownfiesta.epic_energy_service.payloads.UserRoleRequiredDTO;
 import clownfiesta.epic_energy_service.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -44,6 +45,25 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public User findById(@PathVariable long userId) {
         return this.userServices.findById(userId);
+    }
+
+    @PatchMapping("/{userId}/roles/add")
+//    @PreAuthorize("hasAuthority('ADMIN')")
+    public User addRole(@PathVariable long userId, @RequestBody @Validated UserRoleRequiredDTO body, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException(bindingResult.getAllErrors());
+        }
+        return this.userServices.addRole(userId, body);
+    }
+
+    @PatchMapping("/{userId}/roles/remove")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public User removeRole(@PathVariable long userId, @RequestBody @Validated UserRoleRequiredDTO body, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException(bindingResult.getAllErrors());
+        }
+        return this.userServices.removeRole(userId, body);
     }
 
     @PutMapping("/{userId}")

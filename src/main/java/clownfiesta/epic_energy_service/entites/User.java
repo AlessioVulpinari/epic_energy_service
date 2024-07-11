@@ -1,15 +1,13 @@
 package clownfiesta.epic_energy_service.entites;
 
-import clownfiesta.epic_energy_service.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -43,8 +41,13 @@ public class User implements UserDetails {
     @Column(name = "url_avatar_utente")
     private String avatar;
 
-    @Enumerated(EnumType.STRING)
-    private List<Role> roleList;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "ruoli_utenti",
+            joinColumns = @JoinColumn(name = "id_utente"),
+            inverseJoinColumns = @JoinColumn(name = "id_ruolo"))
+    Set<UserRole> userRoles;
+
 
     public User(String username, String email, String password, String name, String surname) {
         this.username = username;
@@ -53,22 +56,20 @@ public class User implements UserDetails {
         this.name = name;
         this.surname = surname;
         this.avatar = "https://ui-avatars.com/api/?name=" + this.getName() + "+" + this.getSurname();
-
-        this.roleList = new ArrayList<>();
-        addRole(Role.USER);
+        this.userRoles = new HashSet<>();
     }
 
-    public void addRole (Role role) {
-        this.roleList.add(role);
+    public void addRole (UserRole role) {
+        this.userRoles.add(role);
     }
 
-    public void removeRole (Role role) {
-        this.roleList.remove(role);
+   public void removeRole (UserRole role) {
+      this.userRoles.remove(role);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roleList.stream().map((role -> new SimpleGrantedAuthority(role.name())))
+        return this.userRoles.stream().map((role -> new SimpleGrantedAuthority(role.getName())))
                 .collect(Collectors.toList());
     }
 

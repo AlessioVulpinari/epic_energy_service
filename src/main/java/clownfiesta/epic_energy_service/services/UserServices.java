@@ -1,25 +1,31 @@
 package clownfiesta.epic_energy_service.services;
 
 import clownfiesta.epic_energy_service.entites.User;
+import clownfiesta.epic_energy_service.entites.UserRole;
 import clownfiesta.epic_energy_service.excepitions.BadRequestException;
 import clownfiesta.epic_energy_service.excepitions.NotFoundException;
 import clownfiesta.epic_energy_service.payloads.UserRequiredDTO;
+import clownfiesta.epic_energy_service.payloads.UserRoleRequiredDTO;
 import clownfiesta.epic_energy_service.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
-import java.util.UUID;
+
 
 @Service
+@Transactional
 public class UserServices {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserRoleService userRoleService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -32,7 +38,27 @@ public class UserServices {
             throw new BadRequestException("Esiste già un utente con questo username: " + body.username());});
 
         User newUser = new User(body.username(), body.email(),  passwordEncoder.encode(body.password()),  body.name(), body.surname());
+
+        newUser.getUserRoles().add(userRoleService.findByName("User"));
+
         return userRepository.save(newUser);
+    }
+
+    public User addRole(long userId, UserRoleRequiredDTO body) {
+
+       UserRole found = this.userRoleService.findByName(body.name());
+       User user = this.findById(userId);
+
+       user.addRole(found);
+       return this.userRepository.save(user);
+    }
+
+    public User removeRole(long userId, UserRoleRequiredDTO body) {
+        User found = this.findById(userId);
+        UserRole role = this.userRoleService.findByName(body.name());
+        found.removeRole(role);
+
+        return this.userRepository.save(found);
     }
 
     public Page<User> getUsers(int pageNumber, int pageSize) {
