@@ -39,7 +39,7 @@ public class UserServices {
 
         User newUser = new User(body.username(), body.email(),  passwordEncoder.encode(body.password()),  body.name(), body.surname());
 
-        newUser.getUserRoles().add(userRoleService.findByName("User"));
+        newUser.getUserRoles().add(userRoleService.findByName("USER"));
 
         return userRepository.save(newUser);
     }
