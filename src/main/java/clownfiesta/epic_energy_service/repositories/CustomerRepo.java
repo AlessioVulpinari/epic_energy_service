@@ -2,6 +2,7 @@ package clownfiesta.epic_energy_service.repositories;
 
 import clownfiesta.epic_energy_service.entites.Customer;
 import clownfiesta.epic_energy_service.enums.ClientType;
+import clownfiesta.epic_energy_service.enums.LocationType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,8 +31,8 @@ public interface CustomerRepo extends JpaRepository<Customer, Long> {
     @Query("SELECT c FROM Customer c ORDER BY dateLastContact")
     Page<Customer> orderByDateLastContact(Pageable pageable);
 
-    //@Query("SELECT c FROM Customer c JOIN Address a ON c.id=a.customer JOIN City ct ON a.cityResidence = ct.id JOIN Province p ON ct.district= p.id ORDER BY p.nameDistrict")
-    //Page<Customer> orderByProvinceName(Pageable pageable);
+    @Query("SELECT c FROM Customer c JOIN Address a ON c.id = a.customer.id WHERE a.locationTypes = :locationType ORDER BY a.cityResidence.district.nameDistrict")
+    Page<Customer> orderByProvinceName(@Param("locationType") LocationType locationType, Pageable pageable);
 
     //////////////////////////////FILTRI777777777777777777777777777777
 

@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/states")
+@CrossOrigin(origins = "http://localhost:5173")
 public class InvoiceStateControllers {
     @Autowired
     InvoiceStateServices invoiceStateServices;

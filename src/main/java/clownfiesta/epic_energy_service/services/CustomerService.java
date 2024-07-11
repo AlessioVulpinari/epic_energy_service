@@ -2,6 +2,7 @@ package clownfiesta.epic_energy_service.services;
 
 import clownfiesta.epic_energy_service.entites.Customer;
 import clownfiesta.epic_energy_service.enums.ClientType;
+import clownfiesta.epic_energy_service.enums.LocationType;
 import clownfiesta.epic_energy_service.excepitions.BadRequestException;
 import clownfiesta.epic_energy_service.excepitions.NotFoundException;
 import clownfiesta.epic_energy_service.payloads.CustomerDTO;
@@ -67,6 +68,7 @@ public class CustomerService {
     public Customer saveCustomer(CustomerDTO body) {
         if (this.customerRepository.existsByVatNumber(body.vatNumber()))
             throw new BadRequestException("Esiste già un cliente con questa partita IVA!");
+
         if (this.customerRepository.existsByBusinessNameAndClientType(body.businessName(), ClientType.valueOf(body.clientType()))) {
             throw new BadRequestException("Esiste già un cliente con questa denominazione!");
         }
@@ -98,10 +100,10 @@ public class CustomerService {
         return customerRepository.orderByInsertionDate(pageable);
     }
 
-    /*public Page<Customer> filterByLegalOffice(int page, int size) {
+    public Page<Customer> filterByProvinceName(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return customerRepository.orderByProvinceName(pageable);
-    }*/
+        return customerRepository.orderByProvinceName(LocationType.HEADQUARTERSOFFICE, pageable);
+    }
 
     public Page<Customer> filterByAnnualTurnover(int page, int size, long turnover) {
         Pageable pageable = PageRequest.of(page, size);

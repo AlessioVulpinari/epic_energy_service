@@ -17,6 +17,7 @@ import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/customers")
+@CrossOrigin(origins = "http://localhost:5173")
 public class CustomerController {
 
     @Autowired
@@ -71,6 +72,11 @@ public class CustomerController {
     @PreAuthorize("hasAuthority('ADMIN')")
     Page<Customer> findbYLastContact(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
         return customerService.filterByLastContact(page, size);
+    }
+
+    @GetMapping("/provincename")
+    Page<Customer> findByProvinceName(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        return customerService.filterByProvinceName(page, size);
     }
 
     @GetMapping("/filterturonver/{turnover}")

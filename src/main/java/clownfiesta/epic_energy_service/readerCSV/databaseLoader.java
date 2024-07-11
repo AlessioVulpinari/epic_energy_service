@@ -49,10 +49,6 @@ public class databaseLoader {
 
         List<Province> newProvinces = csvProvincia.stream()
                 .map(row -> {
-                    //                    province.setInitialDistrict(row[0]);
-//                    province.setNameDistrict(row[1]);
-//                    province.setRegionDistrict(row[2]);
-
                     switch (row[1]) {
 
                         case "Monza-Brianza":
@@ -112,17 +108,12 @@ public class databaseLoader {
         Set<Province> newProvincesSet = new HashSet<>(newProvinces);
         newProvincesSet.removeAll(existingProvinces);
 
-        //newProvincesSet.forEach(provinceRepository::save);
+        // newProvincesSet.forEach(provinceRepository::save);
 
         HashSet<String> errorList = new HashSet<>();
 
         List<City> newCity = csvCity.stream()
                 .map(row -> {
-                    // city.setProgressiveCity(String.valueOf(row[0]) + String.valueOf(row[1]));
-//                    city.setDenominationCity(row[2]);
-//                    city.setDistrict(this.provinceServices.findByName(row[3])); //commentando questo e run si riempiono entrambe le tabelle ma nelle city la colonna district_id rimane vuota
-//                    System.out.println((row[3]));
-
                     City city = new City();
 
                     try {
@@ -142,9 +133,9 @@ public class databaseLoader {
         Set<City> newMunicipalitiesSet = new HashSet<>(newCity);
         newMunicipalitiesSet.removeAll(existingMunicipalities);
 
-        //newMunicipalitiesSet.forEach(cityRepository::save);
+       // newMunicipalitiesSet.forEach(cityRepository::save);
 
-        errorList.forEach(System.out::println);
+        //errorList.forEach(System.out::println);
     }
 
 }

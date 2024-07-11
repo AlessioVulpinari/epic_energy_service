@@ -9,13 +9,15 @@ public record AddressRequestDto(
         String street,
         @NotNull(message = "Inserire civico")
         Integer houseNumber,
-        @NotNull(message = "Inserire localita")
+        @NotNull(message = "Inserire località")
         String locality,
         @NotNull(message = "Inserire cap")
         Long cap,
-        @NotNull(message = "Inserire citta di residenza")
+        @NotNull(message = "Inserire città di residenza")
         City cityResidence,
         @NotNull(message = "Inserire customer")
-        Customer customer
+        Customer customer,
+        @NotNull(message = "Inserire tipo sede")
+        String locationType
 ) {
 }
