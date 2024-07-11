@@ -112,7 +112,7 @@ public class databaseLoader {
         Set<Province> newProvincesSet = new HashSet<>(newProvinces);
         newProvincesSet.removeAll(existingProvinces);
 
-        //newProvincesSet.forEach(provinceRepository::save);
+//        newProvincesSet.forEach(provinceRepository::save);
 
         HashSet<String> errorList = new HashSet<>();
 
@@ -142,7 +142,7 @@ public class databaseLoader {
         Set<City> newMunicipalitiesSet = new HashSet<>(newCity);
         newMunicipalitiesSet.removeAll(existingMunicipalities);
 
-        //newMunicipalitiesSet.forEach(cityRepository::save);
+//        newMunicipalitiesSet.forEach(cityRepository::save);
 
         errorList.forEach(System.out::println);
     }

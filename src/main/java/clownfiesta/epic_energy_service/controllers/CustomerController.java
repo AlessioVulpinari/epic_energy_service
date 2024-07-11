@@ -17,6 +17,7 @@ import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/customers")
+@CrossOrigin(origins = "http://localhost:5173")
 public class CustomerController {
 
     @Autowired
