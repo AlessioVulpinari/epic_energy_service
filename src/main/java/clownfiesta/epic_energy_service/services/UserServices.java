@@ -8,6 +8,7 @@ import clownfiesta.epic_energy_service.payloads.UserRequiredDTO;
 import clownfiesta.epic_energy_service.payloads.UserRoleRequiredDTO;
 import clownfiesta.epic_energy_service.repositories.UserRepository;
 import clownfiesta.epic_energy_service.tools.MailgunSender;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,6 +44,8 @@ public class UserServices {
         });
 
         User newUser = new User(body.username(), body.email(), passwordEncoder.encode(body.password()), body.name(), body.surname());
+
+        newUser.getUserRoles().add(userRoleService.findByName("USER"));
 
         User saved = userRepository.save(newUser);
 
