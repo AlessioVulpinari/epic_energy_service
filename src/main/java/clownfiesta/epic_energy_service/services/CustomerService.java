@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,9 +37,10 @@ public class CustomerService {
         else throw new NotFoundException("Cliente con questo id: " + id + " non trovato!");
     }
 
-    public Customer findById(long userId) {
-        return this.customerRepository.findById(userId).orElseThrow(() -> new NotFoundException(userId));
+    public Customer findById(long customerId) {
+        return customerRepository.findById(customerId).orElseThrow(() -> new NotFoundException(customerId));
     }
+
 
     public Customer findByIdAndUpdate(long customerId, CustomerDTO body) {
         Customer found = findById(customerId);
@@ -78,6 +80,10 @@ public class CustomerService {
                 body.surnameContact(), body.telContact(), body.logoAgency(), ClientType.valueOf(body.clientType()));
 
         return customerRepository.save(customer);
+    }
+
+    public List<Customer> getAllCustomer() {
+        return customerRepository.findAll();
     }
 
     public Page<Customer> orderByname(int page, int size) {

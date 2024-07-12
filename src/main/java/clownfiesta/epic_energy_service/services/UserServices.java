@@ -7,7 +7,7 @@ import clownfiesta.epic_energy_service.excepitions.NotFoundException;
 import clownfiesta.epic_energy_service.payloads.UserRequiredDTO;
 import clownfiesta.epic_energy_service.payloads.UserRoleRequiredDTO;
 import clownfiesta.epic_energy_service.repositories.UserRepository;
-import jakarta.transaction.Transactional;
+import clownfiesta.epic_energy_service.tools.MailgunSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
-
 
 @Service
 @Transactional
@@ -30,18 +29,25 @@ public class UserServices {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private MailgunSender mailgunSender;
+
     public User saveUser(UserRequiredDTO body) {
         this.userRepository.findByEmail(body.email()).ifPresent(user ->
-        {throw new BadRequestException("Esiste già un utente con questa email: " + body.email());});
+        {
+            throw new BadRequestException("Esiste già un utente con questa email: " + body.email());
+        });
 
         this.userRepository.findByUsername(body.username()).ifPresent(user -> {
-            throw new BadRequestException("Esiste già un utente con questo username: " + body.username());});
+            throw new BadRequestException("Esiste già un utente con questo username: " + body.username());
+        });
 
-        User newUser = new User(body.username(), body.email(),  passwordEncoder.encode(body.password()),  body.name(), body.surname());
+        User newUser = new User(body.username(), body.email(), passwordEncoder.encode(body.password()), body.name(), body.surname());
 
-        newUser.getUserRoles().add(userRoleService.findByName("USER"));
+        User saved = userRepository.save(newUser);
 
-        return userRepository.save(newUser);
+        mailgunSender.sendRegistrationEmail(saved);
+        return saved;
     }
 
     public User addRole(long userId, UserRoleRequiredDTO body) {
@@ -62,9 +68,9 @@ public class UserServices {
     }
 
     public Page<User> getUsers(int pageNumber, int pageSize) {
-        if (pageSize <= 0) pageSize =10;
+        if (pageSize <= 0) pageSize = 10;
         if (pageSize >= 50) pageSize = 50;
-        Pageable pageable= PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return userRepository.findAll(pageable);
     }
 
@@ -78,8 +84,7 @@ public class UserServices {
         }
     }
 
-    public User findByIdAndUpdate(long userId, UserRequiredDTO body)
-    {
+    public User findByIdAndUpdate(long userId, UserRequiredDTO body) {
         User found = findById(userId);
         found.setEmail(body.email());
         found.setUsername(body.username());
