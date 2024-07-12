@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -76,6 +77,10 @@ public class CustomerService {
                 body.surnameContact(), body.telContact(), body.logoAgency(), ClientType.valueOf(body.clientType()));
 
         return customerRepository.save(customer);
+    }
+
+    public List<Customer> getAllCustomer() {
+        return customerRepository.findAll();
     }
 
     public Page<Customer> orderByname(int page, int size) {
