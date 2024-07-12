@@ -34,7 +34,7 @@ public class InvoiceControllers {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN, USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteInvoice(@PathVariable Long id) {
         invoiceServices.deleteInvocie(id);
@@ -51,21 +51,21 @@ public class InvoiceControllers {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN, USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public Invoice getInvoiceById(@PathVariable Long id) {
         return invoiceServices.getInvoiceById(id);
     }
 
     @GetMapping("/{numberinvoice}")
-    @PreAuthorize("hasAuthority('ADMIN, USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public Invoice getInvoiceByNumber(@PathVariable Long numberInvoice) {
         return invoiceServices.findBynumberinvoice(numberInvoice);
     }
 
     @GetMapping("/customer/{customerId}")
-    @PreAuthorize("hasAuthority('ADMIN, USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public List<Invoice> getInvoicesByCustomerId(@PathVariable Long customerId) {
         return invoiceServices.getAllInvoicesByCustomerId(customerId);
