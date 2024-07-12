@@ -40,8 +40,15 @@ public class CustomerController {
         return customerService.getAllCustomer();
     }
 
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    public Customer getCustomerById(@PathVariable Long id) {
+        return customerService.findById(id);
+    }
+
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN, USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCustomer(@PathVariable Long id) {
         customerService.findByIdAndDelete(id);

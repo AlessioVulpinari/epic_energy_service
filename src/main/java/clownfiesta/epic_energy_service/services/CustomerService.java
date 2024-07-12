@@ -36,9 +36,10 @@ public class CustomerService {
         else throw new NotFoundException("Cliente con questo id: " + id + " non trovato!");
     }
 
-    public Customer findById(long userId) {
-        return this.customerRepository.findById(userId).orElseThrow(() -> new NotFoundException(userId));
+    public Customer findById(long customerId) {
+        return customerRepository.findById(customerId).orElseThrow(() -> new NotFoundException(customerId));
     }
+
 
     public Customer findByIdAndUpdate(long customerId, CustomerDTO body) {
         Customer found = findById(customerId);
